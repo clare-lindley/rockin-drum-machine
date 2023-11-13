@@ -16,12 +16,59 @@
   }
 }
 
+/* Drum Machine */
 body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+  /* margin: 0;
+  display: flex;
+  place-items: start;
+  min-width: 320px;
+  min-height: 100vh; */
+}
+
+.drum-pad {
+  background-color: aquamarine;
+  height: 60px;
+  width: 60px;
+  margin: 10px;
+  cursor: pointer;
+}
+
+/* Audio Recorder */
+.audio-recorder {
+  background-color: darkcyan;
+}
+.audio-controls button {
+  background-color: aqua;
+}
+.button-flex {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+.audio-controls,
+.video-controls {
+    margin-bottom: 20px;
+}
+.audio-player,
+.video-player {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.audio-player,
+.video-player,
+.recorded-player {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.live-player {
+    height: 200px;
+    width: 400px;
+    border: 1px solid #646cff;
+}
+.recorded-player video {
+  height: 400px;
+  width: 800px;
 }
