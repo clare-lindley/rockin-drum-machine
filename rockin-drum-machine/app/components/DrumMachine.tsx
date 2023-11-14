@@ -10,11 +10,24 @@ export default function DrumMachine(props: DrumMachineProps) {
   
     const [currentDrum, setCurrentDrum] = useState<string | undefined>()
 
+
+    /*
+        How does useEffect work?
+        How can I put data in indexedDb?
+        How can I read data from indexedDb?
+    */
+
     useEffect(() => {
         const fetchDataFromIndexedDB = async () => {
           try {
-            const db = await openDatabase();
-            // Use other functions to interact with IndexedDB
+            const db:IDBDatabase = await openDatabase();
+            console.log({db})
+
+            // This is what our customer data looks like.
+
+            // create and insert the drums
+            // create a record in the object store
+            // read that
           } catch (error) {
             console.error(error);
           }
