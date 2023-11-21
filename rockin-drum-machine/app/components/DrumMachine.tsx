@@ -21,13 +21,6 @@ export default function DrumMachine(props: DrumMachineProps) {
         const fetchDataFromIndexedDB = async () => {
           try {
             const db:IDBDatabase = await openDatabase();
-            console.log({db})
-
-            // This is what our customer data looks like.
-
-            // create and insert the drums
-            // create a record in the object store
-            // read that
           } catch (error) {
             console.error(error);
           }
