@@ -1,4 +1,6 @@
-const drums = [
+import { Drum } from "@/app/types"
+
+const drums: Drum[] = [
     {
       id: "4be47b47-ed3e-46cd-80e0-64cbcc957ef8",
       audioFileUrl: "https://s3.amazonaws.com/freecodecamp/drums/Heater-1.mp3",
