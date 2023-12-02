@@ -1,6 +1,7 @@
 "use client"
 
 import React from "react";
+import AudioRecorder from "../components/AudioRecorderV2";
 
 /**
  * SPIKE 2!  use app router to create the ‘create-drum-machine’ page.   ✅ 
@@ -11,6 +12,7 @@ export default function CreateDrumMachine() {
   return (
     <>
      <h1>Create Drum Machine</h1>
+     <AudioRecorder />
     </>
   )
 }

@@ -43,10 +43,10 @@ const AudioRecorder = () => {
   return (
     <div>
       <h1>Audio Recorder</h1>
-      <button onClick={startRecording} disabled={status === 'recording'}>
+      <button className="h-10 px-6 font-semibold rounded-md bg-black text-white" onClick={startRecording} disabled={status === 'recording'}>
         Start Recording
       </button>
-      <button onClick={stopRecording} disabled={status !== 'recording'}>
+      <button className="h-10 px-6 font-semibold rounded-md bg-black text-white" onClick={stopRecording} disabled={status !== 'recording'}>
         Stop Recording
       </button>
 
