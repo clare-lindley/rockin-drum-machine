@@ -13,7 +13,8 @@
     "dexie-react-hooks": "^1.1.7",
     "next": "14.0.2",
     "react": "^18",
-    "react-dom": "^18"
+    "react-dom": "^18",
+    "react-media-recorder-2": "^1.6.23"
   },
   "devDependencies": {
     "@types/node": "^20",

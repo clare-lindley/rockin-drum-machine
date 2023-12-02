@@ -1,5 +1,5 @@
 export interface Drum {
-    id: string,
+    id?: number,
     audioFileUrl: string,
     key: string,
     name: string
@@ -12,4 +12,10 @@ export interface DrumMachineProps {
 export interface DrumProps {
     drum: Drum
     onDrumClick: () => void
-  }
+}
+
+export interface Recording {
+  id?: number,
+  audioBlob: Blob,
+  blobUrl: string
+}
