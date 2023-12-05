@@ -17,25 +17,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-
-      <div className="wrapper">
-        <div className="header">HEADER</div>
-        <div className="main">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed nec lectus eu sem convallis elementum. Nunc accumsan lacus eu arcu dictum, auctor rutrum purus ultrices. Nulla facilisi. Proin nec elit at neque tristique cursus. Nulla facilisi. Sed et risus vel mi tincidunt feugiat ut et ligula.
-
-Maecenas vestibulum, libero nec posuere cursus, purus velit pharetra libero, id tincidunt quam justo vel tortor. Ut suscipit, sem vitae gravida sagittis, arcu metus tincidunt lacus, vel aliquam velit justo ut nunc. Nulla facilisi. Integer sit amet suscipit est. Integer quis augue in justo faucibus ultrices vel nec mauris.
-
-Vestibulum eget risus eu risus consectetur eleifend. Fusce quis est sed mi tempus feugiat. Sed id facilisis mauris. Sed et lectus in justo ultrices gravida. In fermentum vel odio eu viverra. Sed at turpis id mi vestibulum eleifend.
-
-Curabitur nec tincidunt ligula. Nunc vel massa nec odio pellentesque tincidunt in a justo. Fusce eu ipsum eget ligula dictum varius vel et ante. Nullam dapibus ex a tristique gravida. Vivamus hendrerit felis vitae lacinia iaculis. Maecenas scelerisque felis sit amet elit efficitur, vel commodo neque dapibus.
-
-Donec fringilla, leo nec faucibus aliquet, nisl sapien aliquam arcu, eu consectetur libero nulla euismod tortor. Vestibulum at arcu id augue iaculis ultricies non a massa. Vivamus eu lectus vel nisl posuere dictum. Duis nec elit non lacus rhoncus tristique in id arcu. Pellentesque vel ullamcorper tortor, non bibendum ligula.</div>
-        <div className="sidebar">SIDEBAR</div>
-        <div className="footer">FOOTER</div>
-      </div>
-
-        <div>
         {children}
-        </div>
       </body>
     </html>
   )

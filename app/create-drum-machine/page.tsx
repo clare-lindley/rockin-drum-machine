@@ -1,7 +1,9 @@
 "use client"
 
 import React from "react";
-import AudioRecorder from "../components/AudioRecorderV2";
+import ReactHookForm from "../components/ReactHookForm";
+import UseFetchHookExample from "../components/UseFetchHookExample";
+import UseLocalStorageHookExample from "../components/UseLocalStorageHookExample";
 
 /**
  * SPIKE 2!  use app router to create the ‘create-drum-machine’ page.   ✅ 
@@ -12,7 +14,9 @@ export default function CreateDrumMachine() {
   return (
     <>
      <h1>Create Drum Machine</h1>
-     <AudioRecorder />
+     <ReactHookForm />
+     <UseFetchHookExample />
+     <UseLocalStorageHookExample />
     </>
   )
 }
