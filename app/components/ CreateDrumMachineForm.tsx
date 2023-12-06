@@ -2,38 +2,42 @@ import React, { useState } from 'react';
 import { useReactMediaRecorder } from 'react-media-recorder-2';
 import { Recording } from '../types'; 
 
+
+interface Sound {
+    sound: Recording,
+    name?: string
+}
+
 interface FormData {
     drumMachineName: string,
-    currentSound?: Recording
+    currentSound?: Sound,
+    allSounds?: Sound[]
 }
 
 
 
 export default function  CreateDrumMachineForm()  {
 
-    /**
-     * 
-     * AUDIO RECORDING - ONE OFF - SAVE TO FORM STATE, READ FROM FORM STATE AND PLAY IN A PLAYA
-     * 
-     *  start recording on click
-     *  stop recording and save the blob to the form state
-     * do a test with an <audio> tag
-     */
-
-    // 2 things in state - DM name, current sound
-    // @todo whats best way to initialise this? 
     const [formData, setFormData] = useState<FormData>({drumMachineName:'', currentSound: undefined})
-
     const { status, startRecording, stopRecording, mediaBlobUrl } = useReactMediaRecorder({
         audio: true,
         onStop: (blobUrl, blob) => {
-            setFormData((previousFormData) => ({...previousFormData, currentSound: {audioBlob: blob, blobUrl}}))
+            setFormData((previousFormData) => ({...previousFormData, currentSound: {sound: {audioBlob: blob, blobUrl}}}))
         },
       });
 
+    // Use a unique key based on blobUrl - this is so that React knows to re-render the preview when the sound changes :) 
+    const audioKey = formData.currentSound ? formData.currentSound.sound.blobUrl : 'no-audio';
 
+    const saveMySound = (event: React.UIEvent<HTMLButtonElement>) => {
 
+        // 1. Give the current sound a NAME (overwrite currentSound with new data)
 
+        // 2. Add current sound to a list of sounds we want to save
+        console.log('saving the sound to the drum machine LOCALLY')
+        console.log({formData})
+
+    }
 
 return  (
     <>
@@ -44,17 +48,26 @@ return  (
         </label>
     </div>
     <div>
-        <button className="h-10 px-6 font-semibold rounded-md bg-black text-white" onClick={startRecording} disabled={status === 'recording'}>
+        <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onClick={startRecording} disabled={status === 'recording'}>
         Start Recording
       </button>
-      <button className="h-10 px-6 font-semibold rounded-md bg-black text-white" onClick={stopRecording} disabled={status !== 'recording'}>
+      <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onClick={stopRecording} disabled={status !== 'recording'}>
         Stop Recording
       </button>
       {formData.currentSound && (
-        <audio controls>
-          <source src={formData.currentSound.blobUrl} type="audio/wav" />
+        <>
+        <p>Your sound</p>
+        <audio key={audioKey} controls>
+          <source src={formData.currentSound.sound.blobUrl} type="audio/wav" />
           Your browser does not support the audio element.
         </audio>
+        <label>What is the sound called?: 
+            <input type="text" name="current-sound-name" />
+        </label>
+        <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onClick={saveMySound}>
+        Save My Sound
+      </button>
+        </>
       )}
     </div>
 
