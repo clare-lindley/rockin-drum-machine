@@ -20,7 +20,7 @@ export default function  CreateDrumMachineForm()  {
 
     const [formData, setFormData] = useState<FormData>({drumMachineName:'', currentSound: undefined})
 
-    // don't want to save this in state and use onChange to capture it every time someone types so let's use a ref
+    // don't want to save sound name in state and use onChange to capture it every time someone types so let's use a ref
     // we don't need React to manage it we can just fetch it straight outta the DOM
     const currentSoundNameRef = useRef<HTMLInputElement>(null)
     const { status, startRecording, stopRecording, mediaBlobUrl } = useReactMediaRecorder({
@@ -38,14 +38,20 @@ export default function  CreateDrumMachineForm()  {
         // 1. Give the current sound a NAME (overwrite currentSound with new data)
 
         // 2. Add current sound to a list of sounds we want to save
-        console.log('saving the sound to the drum machine LOCALLY')
-        console.log({formData})
         if(currentSoundNameRef.current){
-            console.log(currentSoundNameRef.current.value)
+
+            const currentSoundName = currentSoundNameRef.current.value
+            // Update the currentSound in formData
+            setFormData((previousFormData) => (
+                {...previousFormData, currentSound: {...previousFormData.currentSound, name: currentSoundName}}
+            ))
+
+
         }
 
 
-        //setFormData((previousFormData) => ({...previousFormData, currentSound: {sound: {audioBlob: blob, blobUrl}}}))
+
+        
 
     }
 
