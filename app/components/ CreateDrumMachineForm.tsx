@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { useReactMediaRecorder } from 'react-media-recorder-2';
 import { Recording } from '../types'; 
 
@@ -19,6 +19,10 @@ interface FormData {
 export default function  CreateDrumMachineForm()  {
 
     const [formData, setFormData] = useState<FormData>({drumMachineName:'', currentSound: undefined})
+
+    // don't want to save this in state and use onChange to capture it every time someone types so let's use a ref
+    // we don't need React to manage it we can just fetch it straight outta the DOM
+    const currentSoundNameRef = useRef<HTMLInputElement>(null)
     const { status, startRecording, stopRecording, mediaBlobUrl } = useReactMediaRecorder({
         audio: true,
         onStop: (blobUrl, blob) => {
@@ -36,6 +40,12 @@ export default function  CreateDrumMachineForm()  {
         // 2. Add current sound to a list of sounds we want to save
         console.log('saving the sound to the drum machine LOCALLY')
         console.log({formData})
+        if(currentSoundNameRef.current){
+            console.log(currentSoundNameRef.current.value)
+        }
+
+
+        //setFormData((previousFormData) => ({...previousFormData, currentSound: {sound: {audioBlob: blob, blobUrl}}}))
 
     }
 
@@ -62,7 +72,7 @@ return  (
           Your browser does not support the audio element.
         </audio>
         <label>What is the sound called?: 
-            <input type="text" name="current-sound-name" />
+            <input type="text" name="current-sound-name" ref={currentSoundNameRef}/>
         </label>
         <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onClick={saveMySound}>
         Save My Sound
@@ -70,8 +80,6 @@ return  (
         </>
       )}
     </div>
-
-
 
     </>
 )
