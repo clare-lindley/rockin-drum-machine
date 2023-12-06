@@ -1,55 +1,65 @@
-import {useState} from 'react'
- 
+import React, { useState } from 'react';
+import { useReactMediaRecorder } from 'react-media-recorder-2';
+import { Recording } from '../types'; 
+
+interface FormData {
+    drumMachineName: string,
+    currentSound?: Recording
+}
+
+
+
 export default function  CreateDrumMachineForm()  {
 
-/**
- * 1. Define the initial value with the useState hook
- * 2. Set the value using the value attribute
- * 3. Handle the value changing and update the state
- * 
- * IF YOU WANT REACT TO MANAGE THE STATE, USE useState hook. 
- * IF YOU WANT THE DOM TO MANAGE THE STATE, USE useRef hook
- */
+    /**
+     * 
+     * AUDIO RECORDING - ONE OFF - SAVE TO FORM STATE, READ FROM FORM STATE AND PLAY IN A PLAYA
+     * 
+     *  start recording on click
+     *  stop recording and save the blob to the form state
+     * do a test with an <audio> tag
+     */
 
-    const [inputValue, setInputValue] = useState('')
-    const [selectedOption, setSelectedOption] = useState('option1')
-    const [isChecked, setIsChecked] = useState(false);
+    // 2 things in state - DM name, current sound
+    // @todo whats best way to initialise this? 
+    const [formData, setFormData] = useState<FormData>({drumMachineName:'', currentSound: undefined})
 
-    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setInputValue(event.target.value)
-    }
+    const { status, startRecording, stopRecording, mediaBlobUrl } = useReactMediaRecorder({
+        audio: true,
+        onStop: (blobUrl, blob) => {
+            setFormData((previousFormData) => ({...previousFormData, currentSound: {audioBlob: blob, blobUrl}}))
+        },
+      });
 
-    const handleDropdownChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-        setSelectedOption(event.target.value)
-    }
 
-    const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setIsChecked(event.target.checked)
-    }
+
+
 
 return  (
     <>
-    <form>
-        <label>Input Value
-            <input type='text' value={inputValue} onChange={handleChange} />
-        </label>
-        <p>Input value {inputValue}</p>
-        <label htmlFor="color">
-            <input type="checkbox" name="color" checked={isChecked} onChange={handleCheckboxChange}/>Blue
-        </label>
-        {isChecked && <div>Blue is selected!</div>}
-    </form>
+
     <div>
-        <label>
-            Select an option
-            <select value={selectedOption} onChange={handleDropdownChange}>
-                <option value='option1'>Option 1</option>
-                <option value='option2'>Option 2</option>
-                <option value='option3'>Option 3</option>
-            </select>
-            <p>Selected value {selectedOption}</p>
+        <label>Give it a name: 
+            <input type="text" name="drum-machine-name" />
         </label>
     </div>
+    <div>
+        <button className="h-10 px-6 font-semibold rounded-md bg-black text-white" onClick={startRecording} disabled={status === 'recording'}>
+        Start Recording
+      </button>
+      <button className="h-10 px-6 font-semibold rounded-md bg-black text-white" onClick={stopRecording} disabled={status !== 'recording'}>
+        Stop Recording
+      </button>
+      {formData.currentSound && (
+        <audio controls>
+          <source src={formData.currentSound.blobUrl} type="audio/wav" />
+          Your browser does not support the audio element.
+        </audio>
+      )}
+    </div>
+
+
+
     </>
 )
 

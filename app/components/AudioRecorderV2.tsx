@@ -9,6 +9,8 @@ import { Recording } from '../types';
  */
 
 const AudioRecorder = () => {
+  // recordings are what we get from indexedDB and we need them
+  // in state because we are displaying them 
   const [recordings, setRecordings] = useState<Recording[] | undefined>();
 
   const { status, startRecording, stopRecording, mediaBlobUrl } = useReactMediaRecorder({

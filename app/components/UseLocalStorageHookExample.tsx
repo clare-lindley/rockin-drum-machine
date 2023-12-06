@@ -10,7 +10,7 @@ export default function useLocalStorageHookExample(){
     return (
       <div>
         <p>Count: {count}</p>
-        <button onClick={increment}>Increment</button>
+        <button className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded' onClick={increment}>Increment</button>
       </div>
     );
 }
