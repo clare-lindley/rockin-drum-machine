@@ -1,7 +1,6 @@
 // dexieDB.ts
 import { Drum, Recording } from '@/app/types';
 import Dexie, { type Table } from 'dexie';
-import drums from './testData';
 
 export class RockinDrumMachineDexie extends Dexie {
   drums!: Table<Drum>; 

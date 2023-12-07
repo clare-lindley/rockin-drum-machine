@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react';
 import { useReactMediaRecorder } from 'react-media-recorder-2';
-import { FormData } from '../types';
+import { Drum, DrumMachine, FormData } from '../types';
 
 
 
@@ -59,6 +59,28 @@ export default function  CreateDrumMachineForm()  {
       console.log('Current Sound: ', formData.currentSound)
       console.log('All Sounds: ', formData.allSounds)
       console.log('Drum Machine name: ', drumMachineName)
+
+      // Take the Sounds and create a new Drum Machine in Dexie
+      const drum: Drum = {
+        audioFileUrl: formData.currentSound?.sound?.blobUrl || '',
+        key: 'Q',
+        name: formData.currentSound?.name || '',
+      }
+      const drumMachine :DrumMachine = {
+          drums: [drum],
+          name: drumMachineName
+      }
+      
+
+
+      // Display the latest Drum Machine on the Homepage
+      // Fix the Build
+      // Fix the UI so it works like the Wireframes
+      // Refactor as best I can using custom hooks so the business logic is seperate from the UI - make all Sounds a Set not an array so we can protect from duplicates
+
+      // Review - when fields can be undefined on one type but required on another, how do you handle an assignment when you KNOW
+      // it's not undefined but Typescript says it might be?
+
     }
 
 return  (

@@ -1,4 +1,4 @@
-// utils/indexedDB.js
+// utils/indexedDB.js @deprecated
 const dbName:string = 'RockinDrumMachine';
 const dbVersion:number = 1;
 

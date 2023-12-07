@@ -1,10 +1,9 @@
 import { useEffect, useState } from "react"
-import { Drum, DrumMachineProps } from "../types"
+import { Drum, DrumMachine } from "../types"
 import DrumPad from "./DrumPad"
 import React from "react"
-import { openDatabase } from "@/utils/indexedDB"
 
-export default function DrumMachine(props: DrumMachineProps) {
+export default function DrumMachine(props: DrumMachine) {
 
     const { drums } = props
   

@@ -5,8 +5,9 @@ export interface Drum {
     name: string
 } 
 
-export interface DrumMachineProps {
+export interface DrumMachine {
     drums: Drum[]
+    name: string
 }
 
 export interface DrumProps {
