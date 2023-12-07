@@ -6,7 +6,7 @@ export interface Drum {
 } 
 
 export interface DrumMachineProps {
-  drums: Drum[]
+    drums: Drum[]
 }
 
 export interface DrumProps {
@@ -15,7 +15,17 @@ export interface DrumProps {
 }
 
 export interface Recording {
-  id?: number,
-  audioBlob: Blob,
-  blobUrl: string
+    id?: number,
+    audioBlob: Blob,
+    blobUrl: string
+}
+
+export interface Sound {
+    sound: Recording,
+    name?: string
+}
+
+export interface FormData {
+    currentSound?: Sound,
+    allSounds?: Sound[]
 }
