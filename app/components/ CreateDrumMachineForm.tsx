@@ -6,7 +6,7 @@ import { FormData } from '../types';
 
 export default function  CreateDrumMachineForm()  {
 
-    const [formData, setFormData] = useState<FormData>({currentSound: undefined, allSounds:[]})
+    const [formData, setFormData] = useState<FormData>({currentSound: undefined, allSounds:undefined})
     const currentSoundNameRef = useRef<HTMLInputElement>(null)
     const drumMachineNameRef = useRef<HTMLInputElement>(null)
     const { status, startRecording, stopRecording, mediaBlobUrl } = useReactMediaRecorder({
@@ -20,7 +20,6 @@ export default function  CreateDrumMachineForm()  {
     
     const saveSound = (event: React.UIEvent<HTMLButtonElement>) => {
 
-        // in this example how can I update the allSounds property of the formState so that it pushes a new value to the array each time and keeps the previous values
         if(currentSoundNameRef.current){
             const currentSoundName = currentSoundNameRef.current.value
             setFormData((previousFormData) => {
@@ -30,7 +29,7 @@ export default function  CreateDrumMachineForm()  {
                 return previousFormData
               }
               else {
-                console.log('why is this logged twice?')
+                console.log('why is this logged twice when saveSound is called?')
                 return {
                   ...previousFormData,
                   currentSound: {
@@ -38,7 +37,7 @@ export default function  CreateDrumMachineForm()  {
                     name: currentSoundName,
                   },
                   allSounds: [
-                    ...(previousFormData.allSounds || []), // Shallow copy of the existing array, or [] if it's undefined and then put the new one on the end
+                    ...(previousFormData.allSounds || []),
                     {
                       ...previousFormData.currentSound,
                       name: currentSoundName,
@@ -64,12 +63,27 @@ export default function  CreateDrumMachineForm()  {
 
 return  (
     <>
-
-
     <div>
+      <p>DEBUG: RECORDING STATUS IS: {status}</p>
         <label>Give it a name: 
             <input type="text" name="drum-machine-name" ref={drumMachineNameRef}/>
         </label>
+        {formData.allSounds && (
+          <>
+            <p>Your sounds:</p>
+            <ul>
+            {formData.allSounds.map((sound, index) => (
+              <li key={sound.sound.blobUrl}>
+                      {sound.name}
+                      <audio controls>
+                      <source src={sound.sound.blobUrl} type="audio/wav" />
+                      Your browser does not support the audio element.
+                    </audio>
+                    </li>
+            ))}
+          </ul>
+        </>
+        )}
     </div>
     <div>
         <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onClick={startRecording} disabled={status === 'recording'}>
