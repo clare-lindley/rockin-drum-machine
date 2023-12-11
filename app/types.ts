@@ -1,14 +1,39 @@
-export interface Drum {
-    id?: number,
+// experimenting with types. tbh I prefer just optional ids
+// but wanted to do sth a bit more complicated as a demo to show my
+// understanding of this problem and the ways there are to solve it :)
+
+interface InsertDrum {
+    name: string,
     audioFileUrl: string,
     key: string,
-    name: string
+    drumMachineId: number
 } 
 
-export interface DrumMachine {
-    drums: Drum[]
+interface RetrieveDrum extends InsertDrum {
+    id: number
+}
+
+export type Drum = InsertDrum | RetrieveDrum
+
+interface InsertDrumMachine {
     name: string
 }
+
+interface RetrieveDrumMachine extends InsertDrumMachine {
+    id: number, 
+    drums: Drum[]
+}
+
+export type DrumMachine = InsertDrumMachine | RetrieveDrumMachine
+
+export function isDrumMachineWithId(obj: DrumMachine): obj is RetrieveDrumMachine {
+    return 'drums' in obj && 'id' in obj;
+}
+
+export function isDrumWithId(obj: Drum): obj is RetrieveDrum {
+    return 'id' in obj;
+}
+
 
 export interface DrumProps {
     drum: Drum

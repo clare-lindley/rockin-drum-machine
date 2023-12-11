@@ -1,21 +1,21 @@
 // dexieDB.ts
-import { Drum, Recording } from '@/app/types';
+import { Drum, DrumMachine, Recording } from '@/app/types';
 import Dexie, { type Table } from 'dexie';
 
-export class RockinDrumMachineDexie extends Dexie {
+export class DrumMachineDatabase extends Dexie {
   drums!: Table<Drum>; 
-  recordings!: Table<Recording>; 
+  drumMachines!: Table<DrumMachine>; 
 
   constructor() {
-    super('rockin-drum-machine');
+    super('drum-machine-database');
     this.version(1).stores({
-      drums: '++id, audioFileUrl, key, name',
-      recordings: '++id, audioBlob, blobUrl',
+      drums: '++id, name, drumMachineId, audioFileUrl, key',
+      drumMachines: '++id, name',
     });
   }
 }
 
-const db = new RockinDrumMachineDexie();
+const db = new DrumMachineDatabase();
 
 export default db;
 
