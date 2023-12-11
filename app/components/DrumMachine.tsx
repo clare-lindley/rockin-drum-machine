@@ -1,21 +1,24 @@
-import { useEffect, useState } from "react"
-import { Drum, DrumMachine } from "../types"
+import { useState } from "react"
+import { DatabaseDrum, DrumMachineProps } from "../types"
 import DrumPad from "./DrumPad"
 import React from "react"
 
-export default function DrumMachineUI(props: DrumMachine) {
+
+
+
+export default function DrumMachineUI(props: DrumMachineProps) {
 
     const { drums } = props
   
     const [currentDrum, setCurrentDrum] = useState<string | undefined>()
 
-    function playDrumPad(drum: Drum){
+    function playDrumPad(drum: DatabaseDrum){
       setCurrentDrum(drum.name)
       const audio = document.getElementById(drum.key) as HTMLAudioElement
       audio?.play()
     }
   
-    function handleDrumClick(drum: Drum){
+    function handleDrumClick(drum: DatabaseDrum){
       playDrumPad(drum)
     }
   

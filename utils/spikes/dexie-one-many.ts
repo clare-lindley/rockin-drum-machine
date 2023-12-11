@@ -43,7 +43,7 @@ libraryDB.transaction('rw', libraryDB.authors, libraryDB.books, async () => {
   // Add an author
   const authorId = await libraryDB.authors.add({ name: 'J.K. Rowling' });
 
-  // Add books associated with the author
+  // Add books associated with the author - lol Chat GPT can't quite get the titles correct!
   const book1Id = await libraryDB.books.add({ title: 'Harry Potter and the Sorcerer\'s Stone', authorId });
   const book2Id = await libraryDB.books.add({ title: 'Harry Potter and the Chamber of Secrets', authorId });
 

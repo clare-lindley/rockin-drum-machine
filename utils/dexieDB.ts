@@ -1,5 +1,5 @@
 // dexieDB.ts
-import { Drum, DrumMachine, Recording } from '@/app/types';
+import { Drum, DrumMachine } from '@/app/types';
 import Dexie, { type Table } from 'dexie';
 
 export class DrumMachineDatabase extends Dexie {

@@ -2,21 +2,21 @@
 
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
-import { Drum, DrumMachine, isDrumMachineWithId } from "./types";
 import db from "@/utils/dexieDB";
 import DrumMachineUI from "./components/DrumMachine";
+import { DatabaseDrum } from "./types";
 
 
 export default function HomePage() {
 
-  const [data, setData] = useState<Drum[] | null>(null);
+  const [drums, setDrums] = useState<DatabaseDrum[] | null>(null);
 
   useEffect(() => {
       const fetchData = async () => {
           try {
-              const result = await db.drums.where({'drumMachineId': 3}).toArray();
+              const result = await db.drums.where({'drumMachineId': 3}).toArray() as DatabaseDrum[]
               if (result) {
-                  setData(result);
+                  setDrums(result);
                   console.log(result)
               } else {
                   // Handle the case when the record is not found
@@ -33,11 +33,11 @@ export default function HomePage() {
 
   return (
     <>
-     {data && (
+     {drums && (
       <>
       <h1>Here is the latest Drum Machine!</h1>
-      <ul>{data.map((drum) =>  <li key={drum.audioFileUrl}>{drum.name}</li>)}</ul>
-      <DrumMachineUI drums={data}/>
+      <ul>{drums.map((drum) =>  <li key={drum.audioFileUrl}>{drum.name}</li>)}</ul>
+      <DrumMachineUI drums={drums}/>
       </>
      )}
 

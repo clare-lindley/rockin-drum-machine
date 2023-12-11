@@ -4,7 +4,7 @@
 // so here we have separate interface for insert and retrieve to solve this problem
 // and we export one Union type and use a typeguard to check for id
 // I actually feel this gives me more confidence than an optional id but its a bit more
-// fiddly to use
+// fiddly to use 
 
 interface InsertDrum {
     name: string,
@@ -12,35 +12,35 @@ interface InsertDrum {
     key: string,
     drumMachineId: number
 } 
-
-interface RetrieveDrum extends InsertDrum {
+export interface DatabaseDrum extends InsertDrum {
     id: number
 }
-
-export type Drum = InsertDrum | RetrieveDrum
+export type Drum = InsertDrum | DatabaseDrum
 
 interface InsertDrumMachine {
     name: string
 }
-
-interface RetrieveDrumMachine extends InsertDrumMachine {
+export interface DatabaseDrumMachine extends InsertDrumMachine {
     id: number, 
     drums: Drum[]
 }
+export type DrumMachine = InsertDrumMachine | DatabaseDrumMachine
 
-export type DrumMachine = InsertDrumMachine | RetrieveDrumMachine
-
-export function isDrumMachineWithId(obj: DrumMachine): obj is RetrieveDrumMachine {
+export function isDrumMachineWithId(obj: DrumMachine): obj is DatabaseDrumMachine {
     return 'drums' in obj && 'id' in obj;
 }
 
-export function isDrumWithId(obj: Drum): obj is RetrieveDrum {
+export function isDrumWithId(obj: Drum): obj is DatabaseDrum {
     return 'id' in obj;
 }
 
+export interface DrumMachineProps {
+    drums: DatabaseDrum[];
+};
+
 
 export interface DrumProps {
-    drum: Drum
+    drum: DatabaseDrum
     onDrumClick: () => void
 }
 

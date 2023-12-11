@@ -2,7 +2,7 @@ import React, { useRef, useState } from 'react';
 import { useReactMediaRecorder } from 'react-media-recorder-2';
 import { Drum, DrumMachine, FormData, isDrumMachineWithId } from '../types';
 import db from '@/utils/dexieDB';
-import Dexie, { IndexableType } from 'dexie';
+import { IndexableType } from 'dexie';
 
 
 
