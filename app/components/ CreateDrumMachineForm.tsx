@@ -58,9 +58,9 @@ export default function  CreateDrumMachineForm()  {
 
 
       /**
-       * Turn allSounds into an array of Drums to add
        * Read the latest drum machine from the db and display it on the homepage as a react
        * component
+       * Redirect on Save <3
        * Sort out the UI
        * Clean up and tests
        */
@@ -68,23 +68,30 @@ export default function  CreateDrumMachineForm()  {
       let drumMachineName = drumMachineNameRef.current?.value || ''
 
       db.transaction('rw', db.drums, db.drumMachines, async () => {
-        const drumMachine :DrumMachine = {
-          name: drumMachineName
-        }
-        const dmId: IndexableType = await db.drumMachines.add(drumMachine);
-        const drum: Drum = {
-          audioFileUrl: formData.currentSound?.sound?.blobUrl || '',
-          key: 'Q',
-          name: formData.currentSound?.name || '',
-          drumMachineId: dmId as number
-        }
-        await db.drums.add(drum);
-        const dbDrumMachine:DrumMachine | undefined = await db.drumMachines.get(dmId);
 
+        if(formData.allSounds){
+          const drumMachine :DrumMachine = {
+            name: drumMachineName
+          }
+          const dmId: IndexableType = await db.drumMachines.add(drumMachine);
+          
+          const drums:Drum[] = formData.allSounds.map(sound => 
+           ({
+            audioFileUrl: sound.sound.blobUrl || '',
+            key: 'Q',
+            name: sound.name || '',
+            drumMachineId: dmId as number
+          }))
+
+          await db.drums.bulkAdd(drums);
+
+                  // test we have created it OK
+        const dbDrumMachine:DrumMachine | undefined = await db.drumMachines.get(dmId);
         if (dbDrumMachine && isDrumMachineWithId(dbDrumMachine)) {
           console.log(`Drum Machine: ${dbDrumMachine.name}`);
           console.log('Drums:', dbDrumMachine.drums);
         } 
+        }
     
       }).catch((error) => {
         console.error(error);

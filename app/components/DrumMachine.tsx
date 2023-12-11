@@ -3,7 +3,7 @@ import { Drum, DrumMachine } from "../types"
 import DrumPad from "./DrumPad"
 import React from "react"
 
-export default function DrumMachine(props: DrumMachine) {
+export default function DrumMachineUI(props: DrumMachine) {
 
     const { drums } = props
   

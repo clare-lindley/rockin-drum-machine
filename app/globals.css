@@ -1,6 +1,6 @@
-@tailwind base;
+/* @tailwind base;
 @tailwind components;
-@tailwind utilities;
+@tailwind utilities; */
 
 :root {
   --foreground-rgb: 0, 0, 0;
@@ -16,14 +16,16 @@
   }
 }
 
+
+
 /* Drum Machine */
-body {
-  /* margin: 0;
+/* body {
+ margin: 0;
   display: flex;
   place-items: start;
   min-width: 320px;
-  min-height: 100vh; */
-}
+  min-height: 100vh; 
+} */
 
 .drum-pad {
   background-color: aquamarine;

@@ -1,6 +1,10 @@
 // experimenting with types. tbh I prefer just optional ids
 // but wanted to do sth a bit more complicated as a demo to show my
 // understanding of this problem and the ways there are to solve it :)
+// so here we have separate interface for insert and retrieve to solve this problem
+// and we export one Union type and use a typeguard to check for id
+// I actually feel this gives me more confidence than an optional id but its a bit more
+// fiddly to use
 
 interface InsertDrum {
     name: string,
