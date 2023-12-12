@@ -9,8 +9,8 @@ export class DrumMachineDatabase extends Dexie {
   constructor() {
     super('drum-machine-database');
     this.version(1).stores({
-      drums: '++id, name, drumMachineId, audioFileUrl, audioBlob, key',
-      drumMachines: '++id, name',
+      drums: '++id, createdAt', // it's an object store - we only declare cols we want to index on!
+      drumMachines: '++id, createdAt',
     });
   }
 }

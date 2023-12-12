@@ -7,6 +7,25 @@ import DrumMachineUI from "./components/DrumMachine";
 import { DatabaseDrum } from "./types";
 import testDrums from "../utils/spikes/testData";
 
+/**
+ * 
+ * Add a createdAt timestamp field to the Drum Machine and the Drum
+ * Insert current time (the same one) for the new Drums and Drum Machine
+ * db schema
+ * 
+ * Select drums with the most recent date:
+ * 
+ * 
+ *  // Utilize index for sorting. Filter manually. Can be the best when a limit is used.
+  const latestDrums = await db.drums
+    .orderBy('createdAt')
+    .limit(1)
+ADD index on createdAt
+
+// OK issues
+// we need to read the latest DRUM machine and then do a join to get the drums!
+
+ */
 
 export default function HomePage() {
 
@@ -15,15 +34,18 @@ export default function HomePage() {
   useEffect(() => {
       const fetchData = async () => {
           try {
-            // Ugh type casting here SAD FACE ;-( TS doesn't know what version of 'Drum' we are using here
-              const result = await db.drums.where({'drumMachineId': 3}).toArray() as DatabaseDrum[]
-              if (result) {
-                  setDrums(result);
-                  console.log(result)
-              } else {
-                  // Handle the case when the record is not found
-                  console.log('NO RESULT')
+              // Ugh type coercion here SAD FACE ;-( TS doesn't know what version of 'Drum' we are using here
+              const latestDrums = await db.drums.orderBy('createdAt').limit(1).reverse().toArray() as DatabaseDrum[]
+
+              if(latestDrums && latestDrums.length > 0){
+                console.log({latestDrums})
+                setDrums(latestDrums);
               }
+              else {
+                // Handle the case when the record is not found
+                console.log('NO RESULT')
+              }
+
           } catch (error) {
               console.error('Error fetching drums:', error);
               // Handle the error accordingly
@@ -35,10 +57,9 @@ export default function HomePage() {
 
   return (
     <>
-     {drums && (
+     {(drums && drums.length > 0) && (
       <>
       <h1>Here is the latest Drum Machine from Indexed DB!</h1>
-      <ul>{drums.map((drum) =>  <li key={drum.audioFileUrl}>{drum.name}</li>)}</ul>
       <DrumMachineUI drums={drums}/>
       </>
      )}

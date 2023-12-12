@@ -4,15 +4,6 @@ import { Drum, DrumMachine, FormData, isDrumMachineWithId } from '../types';
 import db from '@/utils/dexieDB';
 import { IndexableType } from 'dexie';
 
-/**
- * 
- * saveSound
- * saveDrumMachine
- * render
- * 
- */
-
-
 export default function  CreateDrumMachineForm()  {
 
     const [formData, setFormData] = useState<FormData>({currentSound: undefined, allSounds:undefined})
@@ -70,8 +61,10 @@ export default function  CreateDrumMachineForm()  {
       db.transaction('rw', db.drums, db.drumMachines, async () => {
 
         if(formData.allSounds){
+          const createdAt = Date.now()
           const drumMachine :DrumMachine = {
-            name: drumMachineName
+            name: drumMachineName,
+            createdAt
           }
           const dmId: IndexableType = await db.drumMachines.add(drumMachine);
           
@@ -81,7 +74,8 @@ export default function  CreateDrumMachineForm()  {
             audioBlob: sound.sound.audioBlob || '',
             key: sound.key || '',
             name: sound.name || '',
-            drumMachineId: dmId as number
+            drumMachineId: dmId as number,
+            createdAt
           }))
 
           await db.drums.bulkAdd(drums);

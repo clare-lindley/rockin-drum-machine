@@ -15,7 +15,8 @@ interface InsertDrum {
     audioFileUrl: string,
     audioBlob: Blob,
     key: string,
-    drumMachineId: number
+    drumMachineId: number,
+    createdAt: number // Using Unix timestamp
 } 
 export interface DatabaseDrum extends InsertDrum {
     id: number
@@ -23,7 +24,8 @@ export interface DatabaseDrum extends InsertDrum {
 export type Drum = InsertDrum | DatabaseDrum
 
 interface InsertDrumMachine {
-    name: string
+    name: string,
+    createdAt: number // Using Unix timestamp
 }
 export interface DatabaseDrumMachine extends InsertDrumMachine {
     id: number, 
