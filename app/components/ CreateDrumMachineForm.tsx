@@ -4,12 +4,18 @@ import { Drum, DrumMachine, FormData, isDrumMachineWithId } from '../types';
 import db from '@/utils/dexieDB';
 import { IndexableType } from 'dexie';
 
-
+/**
+ * 
+ * Save the BLOB
+ * Save the key that the user pressed after this as well
+ * 
+ */
 
 export default function  CreateDrumMachineForm()  {
 
     const [formData, setFormData] = useState<FormData>({currentSound: undefined, allSounds:undefined})
     const currentSoundNameRef = useRef<HTMLInputElement>(null)
+    const currentSoundKeyRef = useRef<HTMLInputElement>(null)
     const drumMachineNameRef = useRef<HTMLInputElement>(null)
     const { status, startRecording, stopRecording, mediaBlobUrl } = useReactMediaRecorder({
         audio: true,
@@ -22,11 +28,12 @@ export default function  CreateDrumMachineForm()  {
     
     const saveSound = (event: React.UIEvent<HTMLButtonElement>) => {
 
-        if(currentSoundNameRef.current){
+        if(currentSoundNameRef.current && currentSoundKeyRef.current){
             const currentSoundName = currentSoundNameRef.current.value
+            const currentSoundKey = currentSoundKeyRef.current.value
             setFormData((previousFormData) => {
               // Don't like that I have to do this. Get it reviewed. I need my audio objects to be initialised and built up over time so some props have to be undefined to begin with
-              // Typescript doesn't deal with ambiguity tho and wants you to asert that things are NOT undefined when I know that they will be at this point.
+              // Typescript doesn't deal with ambiguity tho and wants you to asert that things are NOT undefined when I know that they *will* be at this point.
               if(!previousFormData.currentSound){
                 return previousFormData
               }
@@ -43,6 +50,7 @@ export default function  CreateDrumMachineForm()  {
                     {
                       ...previousFormData.currentSound,
                       name: currentSoundName,
+                      key: currentSoundKey,
                     },
                   ],
                 }
@@ -56,15 +64,6 @@ export default function  CreateDrumMachineForm()  {
 
     const saveDrumMachine = (event: React.UIEvent<HTMLButtonElement>) => {
 
-
-      /**
-       * Read the latest drum machine from the db and display it on the homepage as a react
-       * component
-       * Redirect on Save <3
-       * Sort out the UI
-       * Clean up and tests
-       */
-
       let drumMachineName = drumMachineNameRef.current?.value || ''
 
       db.transaction('rw', db.drums, db.drumMachines, async () => {
@@ -77,20 +76,15 @@ export default function  CreateDrumMachineForm()  {
           
           const drums:Drum[] = formData.allSounds.map(sound => 
            ({
-            audioFileUrl: sound.sound.blobUrl || '',
-            key: 'Q',
+            audioFileUrl: sound.sound.blobUrl || '', // @todo WHY did I do this and is it OK?
+            audioBlob: sound.sound.audioBlob || '',
+            key: sound.key || '',
             name: sound.name || '',
             drumMachineId: dmId as number
           }))
 
           await db.drums.bulkAdd(drums);
 
-                  // test we have created it OK
-        const dbDrumMachine:DrumMachine | undefined = await db.drumMachines.get(dmId);
-        if (dbDrumMachine && isDrumMachineWithId(dbDrumMachine)) {
-          console.log(`Drum Machine: ${dbDrumMachine.name}`);
-          console.log('Drums:', dbDrumMachine.drums);
-        } 
         }
     
       }).catch((error) => {
@@ -137,9 +131,16 @@ return  (
           <source src={formData.currentSound.sound.blobUrl} type="audio/wav" />
           Your browser does not support the audio element.
         </audio>
+        <div>
         <label>What is the sound called?: 
             <input type="text" name="current-sound-name" ref={currentSoundNameRef}/>
         </label>
+        </div>
+        <div>
+                <label>What key would you like to press to play the sound?: 
+            <input type="text" name="current-sound-key" ref={currentSoundKeyRef}/>
+        </label>
+        </div>
         <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onClick={saveSound}>
         Save My Sound!
       </button>

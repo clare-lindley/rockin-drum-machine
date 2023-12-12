@@ -3,12 +3,17 @@
 // understanding of this problem and the ways there are to solve it :)
 // so here we have separate interface for insert and retrieve to solve this problem
 // and we export one Union type and use a typeguard to check for id
-// I actually feel this gives me more confidence than an optional id but its a bit more
-// fiddly to use 
+// I actually feel this might give more confidence than an optional id but it's really annoying 
+// to have to check everywhere and also do type casting when you want to deal with a specific variant
+// eh ¯\_(ツ)_/¯ 
+
+// @todo find a use case to demo Generic types
+
 
 interface InsertDrum {
     name: string,
     audioFileUrl: string,
+    audioBlob: Blob,
     key: string,
     drumMachineId: number
 } 
@@ -47,12 +52,13 @@ export interface DrumProps {
 export interface Recording {
     id?: number,
     audioBlob: Blob,
-    blobUrl: string
+    blobUrl: string // @todo could get rid of this as we generate URL from blob now
 }
 
 export interface Sound {
     sound: Recording,
-    name?: string
+    name?: string,
+    key?: string
 }
 
 export interface FormData {

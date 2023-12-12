@@ -5,6 +5,7 @@ import Link from "next/link";
 import db from "@/utils/dexieDB";
 import DrumMachineUI from "./components/DrumMachine";
 import { DatabaseDrum } from "./types";
+import testDrums from "../utils/spikes/testData";
 
 
 export default function HomePage() {
@@ -14,7 +15,8 @@ export default function HomePage() {
   useEffect(() => {
       const fetchData = async () => {
           try {
-              const result = await db.drums.where({'drumMachineId': 3}).toArray() as DatabaseDrum[]
+            // Ugh type casting here SAD FACE ;-( TS doesn't know what version of 'Drum' we are using here
+              const result = await db.drums.where({'drumMachineId': 2}).toArray() as DatabaseDrum[]
               if (result) {
                   setDrums(result);
                   console.log(result)
@@ -35,11 +37,18 @@ export default function HomePage() {
     <>
      {drums && (
       <>
-      <h1>Here is the latest Drum Machine!</h1>
+      <h1>Here is the latest Drum Machine from Indexed DB!</h1>
       <ul>{drums.map((drum) =>  <li key={drum.audioFileUrl}>{drum.name}</li>)}</ul>
       <DrumMachineUI drums={drums}/>
       </>
      )}
+
+{/*     {testDrums && (
+      <>
+      <h1>Here is a hardcoded Drum Machine with test drums hosted on AWS!</h1>
+      <DrumMachineUI drums={testDrums}/>
+      </> NOTE won't work as doesn't have a blob 
+     )} */}
 
     <p>Some links for you:</p>
     <ul className="homepage-links">

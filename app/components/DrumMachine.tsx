@@ -3,9 +3,6 @@ import { DatabaseDrum, DrumMachineProps } from "../types"
 import DrumPad from "./DrumPad"
 import React from "react"
 
-
-
-
 export default function DrumMachineUI(props: DrumMachineProps) {
 
     const { drums } = props
@@ -41,7 +38,7 @@ export default function DrumMachineUI(props: DrumMachineProps) {
     return (
       <main id="drum-machine">
         {currentDrum && <div id="display">Sound: {currentDrum}</div>}
-       {drums.map((drum, index) =>  <DrumPad drum={drum} key={drum.id} onDrumClick={() => handleDrumClick(drum)}></DrumPad>)}
+       {drums.map((drum) =>  <DrumPad drum={drum} key={drum.id} onDrumClick={() => handleDrumClick(drum)}></DrumPad>)}
       </main>
     );
   }

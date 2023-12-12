@@ -9,7 +9,7 @@ export class DrumMachineDatabase extends Dexie {
   constructor() {
     super('drum-machine-database');
     this.version(1).stores({
-      drums: '++id, name, drumMachineId, audioFileUrl, key',
+      drums: '++id, name, drumMachineId, audioFileUrl, audioBlob, key',
       drumMachines: '++id, name',
     });
   }
