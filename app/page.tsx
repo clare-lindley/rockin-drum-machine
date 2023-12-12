@@ -16,7 +16,7 @@ export default function HomePage() {
       const fetchData = async () => {
           try {
             // Ugh type casting here SAD FACE ;-( TS doesn't know what version of 'Drum' we are using here
-              const result = await db.drums.where({'drumMachineId': 2}).toArray() as DatabaseDrum[]
+              const result = await db.drums.where({'drumMachineId': 3}).toArray() as DatabaseDrum[]
               if (result) {
                   setDrums(result);
                   console.log(result)

@@ -6,10 +6,12 @@ import { IndexableType } from 'dexie';
 
 /**
  * 
- * Save the BLOB
- * Save the key that the user pressed after this as well
+ * saveSound
+ * saveDrumMachine
+ * render
  * 
  */
+
 
 export default function  CreateDrumMachineForm()  {
 
@@ -39,20 +41,19 @@ export default function  CreateDrumMachineForm()  {
               }
               else {
                 console.log('why is this logged twice when saveSound is called?')
+                const newAllSounds = new Set(previousFormData.allSounds);
+                newAllSounds.add({
+                  ...previousFormData.currentSound,
+                  name: currentSoundName,
+                  key: currentSoundKey,
+                });
                 return {
                   ...previousFormData,
                   currentSound: {
                     ...previousFormData.currentSound, 
                     name: currentSoundName,
                   },
-                  allSounds: [
-                    ...(previousFormData.allSounds || []),
-                    {
-                      ...previousFormData.currentSound,
-                      name: currentSoundName,
-                      key: currentSoundKey,
-                    },
-                  ],
+                  allSounds: newAllSounds,
                 }
               }
 
@@ -74,7 +75,7 @@ export default function  CreateDrumMachineForm()  {
           }
           const dmId: IndexableType = await db.drumMachines.add(drumMachine);
           
-          const drums:Drum[] = formData.allSounds.map(sound => 
+          const drums:Drum[] = Array.from(formData.allSounds).map(sound => 
            ({
             audioFileUrl: sound.sound.blobUrl || '', // @todo WHY did I do this and is it OK?
             audioBlob: sound.sound.audioBlob || '',
@@ -100,11 +101,11 @@ return  (
         <label>Give it a name: 
             <input type="text" name="drum-machine-name" ref={drumMachineNameRef}/>
         </label>
-        {formData.allSounds && (
+        {(formData.allSounds && Array.from(formData.allSounds).length) && (
           <>
             <p>Your sounds:</p>
             <ul>
-            {formData.allSounds.map((sound, index) => (
+            {Array.from(formData.allSounds).map((sound) => (
               <li key={sound.sound.blobUrl}>
                       {sound.name}
                       <audio controls>

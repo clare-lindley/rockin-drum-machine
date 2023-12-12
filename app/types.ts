@@ -63,5 +63,5 @@ export interface Sound {
 
 export interface FormData {
     currentSound?: Sound,
-    allSounds?: Sound[]
+    allSounds?: Set<Sound>
 }
