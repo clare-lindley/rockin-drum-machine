@@ -1,3 +1,5 @@
+//@ts-nocheck
+
 import { DatabaseDrum } from "../../app/types"
 
 
