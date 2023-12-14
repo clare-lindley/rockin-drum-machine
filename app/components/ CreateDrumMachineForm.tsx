@@ -4,6 +4,7 @@ import { Drum, DrumMachine, FormData, isDrumMachineWithId } from '../types';
 import db from '@/utils/dexieDB';
 import { IndexableType } from 'dexie';
 import YourSound from './YourSound';
+import YourSounds from './YourSounds';
 
 export default function  CreateDrumMachineForm()  {
 
@@ -19,6 +20,8 @@ export default function  CreateDrumMachineForm()  {
     const audioKey = formData.currentSound ? formData.currentSound.sound.blobUrl : 'no-audio';
 
     const saveSound = (currentSoundName:string, currentSoundKey:string) => {
+
+
 
       setFormData((previousFormData) => {
         // @todo Don't like that I have to do this. Get it reviewed. I need my audio objects to be initialised and built up over time so some props have to be undefined to begin with
@@ -82,59 +85,80 @@ export default function  CreateDrumMachineForm()  {
       
     }
 
+
+   const showYourSound = ():boolean => {
+
+    // When the recording stops and we have a sound saved in the state we display <YourSound />...
+    if(formData.currentSound){
+      if(formData.allSounds){
+        // ... and once the user has previewed the sound they just uploaded and has accepted it - by clicking 
+        // the 'Save my Sound' button (i.e. the 'currentSound' object has safely arrived in the 'allSounds' Set)
+        // - we don't need to display the <YourSound /> component any more :) 
+        const allSounds = Array.from(formData.allSounds);
+        const lastSoundAdded = allSounds[allSounds.length - 1];
+        if(lastSoundAdded.sound.blobUrl === formData.currentSound.sound.blobUrl){
+          return false
+        }
+
+      }
+      return true
+    }
+    return false
+   } 
 /**
  * status - "media_aborted" | "permission_denied" | "no_specified_media_found" | "media_in_use" | "invalid_media_constraints" | "no_constraints" | "recorder_error" | "idle" | "acquiring_media" | "delayed_start" | "recording" | "stopping" | "stopped" | "paused";
- * 1. Recording button
+ * >>> 1. Recording button
  *  text and event handler (start/stop) changes based on status
  *  visibility changes based on presence of currentSound (!currentSoundNameRef.current) write  function isOnScreen('recording-button')?
  * 
- * 2. Recording in progress text and gif
+ * >>> 2. Recording in progress text and gif
  * visibility changes based on status - only show if status is 'recording'
  *    
- * 3. 'Your Sound' - separate component
- *  SHOW changes based on presence of currentSound (!currentSoundNameRef.current) write  function isOnScreen('recording-button')?
+ * 
  */
 
 
 return  (
     <>
     <div>
-      <p>DEBUG: RECORDING STATUS IS: {status}</p>
+
+       {/* Name the DM */}
         <label>Give it a name: 
             <input type="text" name="drum-machine-name" ref={drumMachineNameRef}/>
         </label>
-        {(formData.allSounds && Array.from(formData.allSounds).length) && (
-          <>
-            <p>Your sounds:</p>
-            <ul>
-            {Array.from(formData.allSounds).map((sound) => (
-              <li key={sound.sound.blobUrl}>
-                      {sound.name}
-                      <audio controls>
-                      <source src={sound.sound.blobUrl} type="audio/wav" />
-                      Your browser does not support the audio element.
-                    </audio>
-                    </li>
-            ))}
-          </ul>
-        </>
-        )}
-    </div>
-    <div>
+
+       {/* Start/stop recording */}
+        <div>
         <button onClick={startRecording} disabled={status === 'recording'}>
         Start Recording
       </button>
       <button onClick={stopRecording} disabled={status !== 'recording'}>
         Stop Recording
       </button>
-      {formData.currentSound && (
+
+
+        {/* List of all sounds user has recorded */}
+        {(formData.allSounds && Array.from(formData.allSounds).length) && (
+         <YourSounds allSounds={Array.from(formData.allSounds)}/>
+        )}
+    </div>
+
+
+      {/* Current sound the user has just recorded */}
+      {(showYourSound() && formData.currentSound) && (
         <>
           <YourSound saveSound={saveSound} audioKey={audioKey} blobUrl={formData.currentSound.sound.blobUrl}/>
-          <button onClick={saveDrumMachine}>
-            Save My Drum Machine!
-          </button>
         </>
       )}
+
+        {/* Save Drum Machine button */}
+
+        {(formData.allSounds && Array.from(formData.allSounds).length) && (
+               <button onClick={saveDrumMachine}>
+               Save My Drum Machine!
+             </button>
+        )}
+
     </div>
 
     </>

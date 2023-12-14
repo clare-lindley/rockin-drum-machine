@@ -113,3 +113,14 @@
 input, textarea {
   border: 1px solid burlywood;
 }
+
+.your-sound {
+  background-color: aquamarine;
+  padding: 20px;
+  margin: 20px 0 20px 0;
+}
+.your-sounds {
+  background-color: darksalmon;
+  padding: 20px;
+  margin: 20px 0 20px 0;
+}
