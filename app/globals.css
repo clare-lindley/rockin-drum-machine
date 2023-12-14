@@ -27,6 +27,10 @@
   min-height: 100vh; 
 } */
 
+.dm-title {
+  background-color: aquamarine;
+}
+
 .drum-pad {
   background-color: aquamarine;
   height: 60px;

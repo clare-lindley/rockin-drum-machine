@@ -29,7 +29,7 @@ interface InsertDrumMachine {
 }
 export interface DatabaseDrumMachine extends InsertDrumMachine {
     id: number, 
-    drums: Drum[]
+    drums: DatabaseDrum[]
 }
 export type DrumMachine = InsertDrumMachine | DatabaseDrumMachine
 

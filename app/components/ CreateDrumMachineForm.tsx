@@ -3,12 +3,12 @@ import { useReactMediaRecorder } from 'react-media-recorder-2';
 import { Drum, DrumMachine, FormData, isDrumMachineWithId } from '../types';
 import db from '@/utils/dexieDB';
 import { IndexableType } from 'dexie';
+import YourSound from './YourSound';
 
 export default function  CreateDrumMachineForm()  {
 
     const [formData, setFormData] = useState<FormData>({currentSound: undefined, allSounds:undefined})
-    const currentSoundNameRef = useRef<HTMLInputElement>(null)
-    const currentSoundKeyRef = useRef<HTMLInputElement>(null)
+
     const drumMachineNameRef = useRef<HTMLInputElement>(null)
     const { status, startRecording, stopRecording, mediaBlobUrl } = useReactMediaRecorder({
         audio: true,
@@ -18,39 +18,33 @@ export default function  CreateDrumMachineForm()  {
       });
     const audioKey = formData.currentSound ? formData.currentSound.sound.blobUrl : 'no-audio';
 
-    
-    const saveSound = (event: React.UIEvent<HTMLButtonElement>) => {
+    const saveSound = (currentSoundName:string, currentSoundKey:string) => {
 
-        if(currentSoundNameRef.current && currentSoundKeyRef.current){
-            const currentSoundName = currentSoundNameRef.current.value
-            const currentSoundKey = currentSoundKeyRef.current.value
-            setFormData((previousFormData) => {
-              // Don't like that I have to do this. Get it reviewed. I need my audio objects to be initialised and built up over time so some props have to be undefined to begin with
-              // Typescript doesn't deal with ambiguity tho and wants you to asert that things are NOT undefined when I know that they *will* be at this point.
-              if(!previousFormData.currentSound){
-                return previousFormData
-              }
-              else {
-                console.log('why is this logged twice when saveSound is called?')
-                const newAllSounds = new Set(previousFormData.allSounds);
-                newAllSounds.add({
-                  ...previousFormData.currentSound,
-                  name: currentSoundName,
-                  key: currentSoundKey,
-                });
-                return {
-                  ...previousFormData,
-                  currentSound: {
-                    ...previousFormData.currentSound, 
-                    name: currentSoundName,
-                  },
-                  allSounds: newAllSounds,
-                }
-              }
-
-            });
-
+      setFormData((previousFormData) => {
+        // @todo Don't like that I have to do this. Get it reviewed. I need my audio objects to be initialised and built up over time so some props have to be undefined to begin with
+        // Typescript doesn't deal with ambiguity tho and wants you to asert that things are NOT undefined when I know that they *will* be at this point.
+        if(!previousFormData.currentSound){
+          return previousFormData
         }
+        else {
+          console.log('why is this logged twice when this func is is called?')
+          const newAllSounds = new Set(previousFormData.allSounds);
+          newAllSounds.add({
+            ...previousFormData.currentSound,
+            name: currentSoundName,
+            key: currentSoundKey,
+          });
+          return {
+            ...previousFormData,
+            currentSound: {
+              ...previousFormData.currentSound, 
+              name: currentSoundName,
+            },
+            allSounds: newAllSounds,
+          }
+        }
+
+      });
 
     }
 
@@ -88,6 +82,20 @@ export default function  CreateDrumMachineForm()  {
       
     }
 
+/**
+ * status - "media_aborted" | "permission_denied" | "no_specified_media_found" | "media_in_use" | "invalid_media_constraints" | "no_constraints" | "recorder_error" | "idle" | "acquiring_media" | "delayed_start" | "recording" | "stopping" | "stopped" | "paused";
+ * 1. Recording button
+ *  text and event handler (start/stop) changes based on status
+ *  visibility changes based on presence of currentSound (!currentSoundNameRef.current) write  function isOnScreen('recording-button')?
+ * 
+ * 2. Recording in progress text and gif
+ * visibility changes based on status - only show if status is 'recording'
+ *    
+ * 3. 'Your Sound' - separate component
+ *  SHOW changes based on presence of currentSound (!currentSoundNameRef.current) write  function isOnScreen('recording-button')?
+ */
+
+
 return  (
     <>
     <div>
@@ -113,37 +121,18 @@ return  (
         )}
     </div>
     <div>
-        <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onClick={startRecording} disabled={status === 'recording'}>
+        <button onClick={startRecording} disabled={status === 'recording'}>
         Start Recording
       </button>
-      <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onClick={stopRecording} disabled={status !== 'recording'}>
+      <button onClick={stopRecording} disabled={status !== 'recording'}>
         Stop Recording
       </button>
       {formData.currentSound && (
         <>
-        <p>Your sound</p>
-        <audio key={audioKey} controls>
-          <source src={formData.currentSound.sound.blobUrl} type="audio/wav" />
-          Your browser does not support the audio element.
-        </audio>
-        <div>
-        <label>What is the sound called?: 
-            <input type="text" name="current-sound-name" ref={currentSoundNameRef}/>
-        </label>
-        </div>
-        <div>
-                <label>What key would you like to press to play the sound?: 
-            <input type="text" name="current-sound-key" ref={currentSoundKeyRef}/>
-        </label>
-        </div>
-        <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onClick={saveSound}>
-        Save My Sound!
-      </button>
-
-
-      <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onClick={saveDrumMachine}>
-        Save My Drum Machine!
-      </button>
+          <YourSound saveSound={saveSound} audioKey={audioKey} blobUrl={formData.currentSound.sound.blobUrl}/>
+          <button onClick={saveDrumMachine}>
+            Save My Drum Machine!
+          </button>
         </>
       )}
     </div>

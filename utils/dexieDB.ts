@@ -9,13 +9,19 @@ export class DrumMachineDatabase extends Dexie {
   constructor() {
     super('drum-machine-database');
     this.version(1).stores({
-      drums: '++id, createdAt', // it's an object store - we only declare cols we want to index on!
+      drums: '++id, createdAt', 
       drumMachines: '++id, createdAt',
     });
   }
 }
 
 const db = new DrumMachineDatabase();
+
+// add new indexes for drumMachineId
+db.version(3).stores({
+  drums: '++id, createdAt, drumMachineId',
+  drumMachines: '++id, createdAt, drumMachineId',
+});
 
 export default db;
 
