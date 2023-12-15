@@ -15,7 +15,8 @@
     "react": "^18",
     "react-dom": "^18",
     "react-hook-form": "^7.48.2",
-    "react-media-recorder-2": "^1.6.23"
+    "react-media-recorder-2": "^1.6.23",
+    "svg-loaders-react": "^2.2.1"
   },
   "devDependencies": {
     "@types/node": "^20",

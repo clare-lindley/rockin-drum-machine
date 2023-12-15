@@ -5,6 +5,8 @@ import db from '@/utils/dexieDB';
 import { IndexableType } from 'dexie';
 import YourSound from './YourSound';
 import YourSounds from './YourSounds';
+import Image from 'next/image';
+
 
 export default function  CreateDrumMachineForm()  {
 
@@ -105,44 +107,44 @@ export default function  CreateDrumMachineForm()  {
     }
     return false
    } 
-/**
- * status - "media_aborted" | "permission_denied" | "no_specified_media_found" | "media_in_use" | "invalid_media_constraints" | "no_constraints" | "recorder_error" | "idle" | "acquiring_media" | "delayed_start" | "recording" | "stopping" | "stopped" | "paused";
- * >>> 1. Recording button
- *  text and event handler (start/stop) changes based on status
- *  visibility changes based on presence of currentSound (!currentSoundNameRef.current) write  function isOnScreen('recording-button')?
- * 
- * >>> 2. Recording in progress text and gif
- * visibility changes based on status - only show if status is 'recording'
- *    
- * 
- */
-
 
 return  (
     <>
-    <div>
+
+
+<Image
+        src="/audio.svg"
+        alt="Your SVG"
+        width={40} // specify the width of the image
+        height={40} // specify the height of the image
+      />
 
        {/* Name the DM */}
         <label>Give it a name: 
             <input type="text" name="drum-machine-name" ref={drumMachineNameRef}/>
         </label>
 
-       {/* Start/stop recording */}
-        <div>
-        <button onClick={startRecording} disabled={status === 'recording'}>
-        Start Recording
+
+      {/* Start/stop recording */}
+      {status === 'recording' && (
+        <div className="audio-recording">
+        <Image
+          src="/audio.svg" 
+          alt="Your SVG"
+          width={40} 
+          height={40} 
+        />
+      </div>
+      )}
+      <button style={{ display: (status === 'stopped' && showYourSound()) ? 'none' : 'block' }} onClick={status === 'recording' ? stopRecording : startRecording}>
+      {status === 'recording' ? 'Stop Recording' : 'Start Recording'}
       </button>
-      <button onClick={stopRecording} disabled={status !== 'recording'}>
-        Stop Recording
-      </button>
 
 
-        {/* List of all sounds user has recorded */}
-        {(formData.allSounds && Array.from(formData.allSounds).length) && (
-         <YourSounds allSounds={Array.from(formData.allSounds)}/>
-        )}
-    </div>
-
+      {/* List of all sounds user has recorded */}
+      {(formData.allSounds && Array.from(formData.allSounds).length) && (
+      <YourSounds allSounds={Array.from(formData.allSounds)}/>
+      )}
 
       {/* Current sound the user has just recorded */}
       {(showYourSound() && formData.currentSound) && (
@@ -152,16 +154,13 @@ return  (
       )}
 
         {/* Save Drum Machine button */}
-
         {(formData.allSounds && Array.from(formData.allSounds).length) && (
                <button onClick={saveDrumMachine}>
                Save My Drum Machine!
              </button>
         )}
+  </>
 
-    </div>
-
-    </>
 )
 
 }
