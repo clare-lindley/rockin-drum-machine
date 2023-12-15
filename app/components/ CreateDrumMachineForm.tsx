@@ -13,7 +13,7 @@ export default function  CreateDrumMachineForm()  {
     const [formData, setFormData] = useState<FormData>({currentSound: undefined, allSounds:undefined})
 
     const drumMachineNameRef = useRef<HTMLInputElement>(null)
-    const { status, startRecording, stopRecording, mediaBlobUrl } = useReactMediaRecorder({
+    const { status, startRecording, stopRecording } = useReactMediaRecorder({
         audio: true,
         onStop: (blobUrl, blob) => {
             setFormData((previousFormData) => ({...previousFormData, currentSound: {sound: {audioBlob: blob, blobUrl}}}))
@@ -87,7 +87,6 @@ export default function  CreateDrumMachineForm()  {
       
     }
 
-
    const showYourSound = ():boolean => {
 
     // When the recording stops and we have a sound saved in the state we display <YourSound />...
@@ -110,15 +109,6 @@ export default function  CreateDrumMachineForm()  {
 
 return  (
     <>
-
-
-<Image
-        src="/audio.svg"
-        alt="Your SVG"
-        width={40} // specify the width of the image
-        height={40} // specify the height of the image
-      />
-
        {/* Name the DM */}
         <label>Give it a name: 
             <input type="text" name="drum-machine-name" ref={drumMachineNameRef}/>

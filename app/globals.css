@@ -115,7 +115,7 @@ input, textarea {
 }
 
 .your-sound {
-  background-color: aquamarine;
+  background-color: #1ABC9C;
   padding: 20px;
   margin: 20px 0 20px 0;
 }
@@ -127,10 +127,5 @@ input, textarea {
 
 .audio-recording {
   background-color: #1ABC9C;
-  text-align: center;
-  width: 180px;
-  height: 180px;
-  line-height: 176px;
-  background-repeat: no-repeat;
-  background-position: center;
+  width: 40px;
 }
