@@ -13,12 +13,26 @@ export default function  CreateDrumMachineForm()  {
     const [formData, setFormData] = useState<FormData>({currentSound: undefined, allSounds:undefined})
 
     const drumMachineNameRef = useRef<HTMLInputElement>(null)
+
+
+    /**
+     * We need the hook to return a value and some functions that the consumer can call
+     * We need the hook to take settings object as an input
+     * We need to be able
+     *   to capture the STOP recording event from the MediaRecorder
+     *   execute the STOP function that the consumer provides and make sure that we give it the correct parameters
+     * We need to be able to use the audio: true prop - maybe idk constrain to audio only idk - find out
+     */
+
+
     const { status, startRecording, stopRecording } = useReactMediaRecorder({
         audio: true,
         onStop: (blobUrl, blob) => {
             setFormData((previousFormData) => ({...previousFormData, currentSound: {sound: {audioBlob: blob, blobUrl}}}))
         },
       });
+
+      
     const audioKey = formData.currentSound ? formData.currentSound.sound.blobUrl : 'no-audio';
 
     const saveSound = (currentSoundName:string, currentSoundKey:string) => {

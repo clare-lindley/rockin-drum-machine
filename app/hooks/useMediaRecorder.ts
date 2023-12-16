@@ -1,14 +1,26 @@
-/**
- * Media Recorder copied from here:https://blog.logrocket.com/how-to-create-video-audio-recorder-react/#mediarecorder-api
- */
+import { useRef, useState } from "react";
 
-import { useState, useRef } from "react";
+export type MediaRecorderHookProps = {
+    onStop: (blobUrl: string) => void;
+};
 
 const mimeType = "audio/webm"
 
 type RecordingStatus = 'recording' | 'inactive' | 'paused'
 
-const AudioRecorder = () => {
+
+    /**
+     * Next steps to make this work in my app
+     * 
+     * 1. change the status so it has 'recording' and 'stopped'
+     * 2. make on stop call BLOB as well as blob url
+     * 3. in the background (on page load/mount?) INSIDE USE EFFECT? capture mic permission
+     * we don't want to make the user click a button
+     * 
+     * 
+     */
+
+const useMediaRecorder = (props: MediaRecorderHookProps) => {
     const [permission, setPermission] = useState<boolean>(false)
     const mediaRecorder = useRef<MediaRecorder | null>(null)
     const [recordingStatus, setRecordingStatus] = useState<RecordingStatus>("inactive")
@@ -42,15 +54,17 @@ const AudioRecorder = () => {
     const stopRecording = () => {
         setRecordingStatus("inactive")
         if(mediaRecorder && mediaRecorder.current){
-            //stops the recording instance
-            mediaRecorder.current.stop()
-            mediaRecorder.current.onstop = () => {
-            //creates a blob file from the audiochunks data
-            const audioBlob = new Blob(audioChunks, { type: mimeType })
-            //creates a playable URL from the blob file.
-            const audioUrl = URL.createObjectURL(audioBlob);
-            setAudio(audioUrl)
-            setAudioChunks([])
+                //stops the recording instance
+                mediaRecorder.current.stop()
+                mediaRecorder.current.onstop = () => {
+                //creates a blob file from the audiochunks data
+                const audioBlob = new Blob(audioChunks, { type: mimeType })
+                //creates a playable URL from the blob file.
+                const audioUrl = URL.createObjectURL(audioBlob);
+                setAudio(audioUrl)
+                setAudioChunks([])
+                // call the consumer's event handler so it can do what it wants with the audio
+                props.onStop(audioUrl)
             }
         }
     }
@@ -71,37 +85,8 @@ const AudioRecorder = () => {
             alert("The MediaRecorder API is not supported in your browser.");
         }
     };
-    return (
-        <div className="audio-recorder">
-            <h2>Audio Recorder</h2>
-            <main>
-                <div className="audio-controls">
-                    {!permission ? (
-                    <button onClick={getMicrophonePermission} type="button">
-                        Get Microphone
-                    </button>
-                    ) : null}
-                    {permission && recordingStatus === "inactive" ? (
-                    <button onClick={startRecording} type="button">
-                        Start Recording
-                    </button>
-                    ) : null}
-                    {recordingStatus === "recording" ? (
-                    <button onClick={stopRecording} type="button">
-                        Stop Recording
-                    </button>
-                    ) : null}
-                </div>
-                {audio ? (
-                <div className="audio-player">
-                    <audio src={audio} controls></audio>
-                    <a download href={audio}>
-                        Download Recording
-                    </a>
-                </div>
-                ) : null}
-            </main>
-        </div>
-    );
+
+  return {stopRecording, startRecording, getMicrophonePermission, recordingStatus};
 };
-export default AudioRecorder;
+
+export default useMediaRecorder;
