@@ -6,6 +6,7 @@ import YourSound from './YourSound';
 import YourSounds from './YourSounds';
 import Image from 'next/image';
 import useMediaRecorder from '../hooks/useMediaRecorder';
+import { redirect } from 'next/navigation';
 
 
 export default function  CreateDrumMachineForm()  {
@@ -22,8 +23,6 @@ export default function  CreateDrumMachineForm()  {
     const audioKey = formData.currentSound ? formData.currentSound.sound.blobUrl : 'no-audio';
 
     const saveSound = (currentSoundName:string, currentSoundKey:string) => {
-
-
 
       setFormData((previousFormData) => {
         // @todo Don't like that I have to do this. Get it reviewed. I need my audio objects to be initialised and built up over time so some props have to be undefined to begin with
@@ -59,32 +58,32 @@ export default function  CreateDrumMachineForm()  {
 
       db.transaction('rw', db.drums, db.drumMachines, async () => {
 
-        if(formData.allSounds){
-          const createdAt = Date.now()
-          const drumMachine :DrumMachine = {
-            name: drumMachineName,
-            createdAt
-          }
-          const dmId: IndexableType = await db.drumMachines.add(drumMachine);
-          
-          const drums:Drum[] = Array.from(formData.allSounds).map(sound => 
-           ({
-            audioFileUrl: sound.sound.blobUrl || '', // @todo WHY did I do this and is it OK?
-            audioBlob: sound.sound.audioBlob || '',
-            key: sound.key || '',
-            name: sound.name || '',
-            drumMachineId: dmId as number,
-            createdAt
-          }))
-
-          await db.drums.bulkAdd(drums);
-
+      if(formData.allSounds){
+        const createdAt = Date.now()
+        const drumMachine :DrumMachine = {
+          name: drumMachineName,
+          createdAt
         }
+        const dmId: IndexableType = await db.drumMachines.add(drumMachine);
+        
+        const drums:Drum[] = Array.from(formData.allSounds).map(sound => 
+          ({
+          audioFileUrl: sound.sound.blobUrl || '', // @todo WHY did I do this and is it OK?
+          audioBlob: sound.sound.audioBlob || '',
+          key: sound.key || '',
+          name: sound.name || '',
+          drumMachineId: dmId as number,
+          createdAt
+        }))
+
+        await db.drums.bulkAdd(drums);
+
+      }
     
-      }).catch((error) => {
-        console.error(error);
-      });
-      
+      })
+
+
+    
     }
 
    const showYourSound = ():boolean => {
