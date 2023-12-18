@@ -1,11 +1,11 @@
 import React, { useRef, useState } from 'react';
-import { useReactMediaRecorder } from 'react-media-recorder-2';
-import { Drum, DrumMachine, FormData, isDrumMachineWithId } from '../types';
+import { Drum, DrumMachine, FormData } from '../types';
 import db from '@/utils/dexieDB';
 import { IndexableType } from 'dexie';
 import YourSound from './YourSound';
 import YourSounds from './YourSounds';
 import Image from 'next/image';
+import useMediaRecorder from '../hooks/useMediaRecorder';
 
 
 export default function  CreateDrumMachineForm()  {
@@ -14,25 +14,11 @@ export default function  CreateDrumMachineForm()  {
 
     const drumMachineNameRef = useRef<HTMLInputElement>(null)
 
-
-    /**
-     * We need the hook to return a value and some functions that the consumer can call
-     * We need the hook to take settings object as an input
-     * We need to be able
-     *   to capture the STOP recording event from the MediaRecorder
-     *   execute the STOP function that the consumer provides and make sure that we give it the correct parameters
-     * We need to be able to use the audio: true prop - maybe idk constrain to audio only idk - find out
-     */
-
-
-    const { status, startRecording, stopRecording } = useReactMediaRecorder({
-        audio: true,
-        onStop: (blobUrl, blob) => {
-            setFormData((previousFormData) => ({...previousFormData, currentSound: {sound: {audioBlob: blob, blobUrl}}}))
-        },
-      });
-
-      
+    const {stopRecording, startRecording, permission, recordingStatus} = useMediaRecorder({
+      onStop: (blob, blobUrl) => {
+        setFormData((previousFormData) => ({...previousFormData, currentSound: {sound: {audioBlob: blob, blobUrl}}}))
+      }
+    });
     const audioKey = formData.currentSound ? formData.currentSound.sound.blobUrl : 'no-audio';
 
     const saveSound = (currentSoundName:string, currentSoundKey:string) => {
@@ -122,7 +108,9 @@ export default function  CreateDrumMachineForm()  {
    } 
 
 return  (
-    <>
+<>
+  {permission ? (
+  <>
        {/* Name the DM */}
         <label>Give it a name: 
             <input type="text" name="drum-machine-name" ref={drumMachineNameRef}/>
@@ -130,7 +118,7 @@ return  (
 
 
       {/* Start/stop recording */}
-      {status === 'recording' && (
+      {recordingStatus === 'recording' && (
         <div className="audio-recording">
         <Image
           src="/audio.svg" 
@@ -140,8 +128,8 @@ return  (
         />
       </div>
       )}
-      <button style={{ display: (status === 'stopped' && showYourSound()) ? 'none' : 'block' }} onClick={status === 'recording' ? stopRecording : startRecording}>
-      {status === 'recording' ? 'Stop Recording' : 'Start Recording'}
+      <button style={{ display: (recordingStatus === 'stopped' && showYourSound()) ? 'none' : 'block' }} onClick={recordingStatus === 'recording' ? stopRecording : startRecording}>
+      {recordingStatus === 'recording' ? 'Stop Recording' : 'Start Recording'}
       </button>
 
 
@@ -163,8 +151,8 @@ return  (
                Save My Drum Machine!
              </button>
         )}
-  </>
-
+  </>) : null }
+</>
 )
 
 }
