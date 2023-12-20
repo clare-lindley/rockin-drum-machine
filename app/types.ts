@@ -13,7 +13,7 @@
 interface InsertDrum {
     name: string,
     audioFileUrl: string,
-    audioBlob: Blob,
+    audioBlob?: Blob,
     key: string,
     drumMachineId: number,
     createdAt: number // Using Unix timestamp

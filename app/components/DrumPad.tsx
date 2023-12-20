@@ -8,7 +8,7 @@ export default function DrumPad(props: DrumProps) {
     useEffect(() => {
       if (typeof window !== 'undefined') { // this is local code for local people, we'll have no trouble here
  
-        const url = window.URL.createObjectURL(drum.audioBlob);
+        const url = (drum.audioBlob) ? window.URL.createObjectURL(drum.audioBlob) : drum.audioFileUrl
         setAudioFileUrl(url);
   
         // Clean up the object URL when the component unmounts

@@ -6,7 +6,7 @@ import YourSound from './YourSound';
 import YourSounds from './YourSounds';
 import Image from 'next/image';
 import useMediaRecorder from '../hooks/useMediaRecorder';
-import { redirect } from 'next/navigation';
+import { redirect, useRouter } from 'next/navigation';
 
 
 export default function  CreateDrumMachineForm()  {
@@ -21,6 +21,8 @@ export default function  CreateDrumMachineForm()  {
       }
     });
     const audioKey = formData.currentSound ? formData.currentSound.sound.blobUrl : 'no-audio';
+
+    const router = useRouter()
 
     const saveSound = (currentSoundName:string, currentSoundKey:string) => {
 
@@ -56,32 +58,48 @@ export default function  CreateDrumMachineForm()  {
 
       let drumMachineName = drumMachineNameRef.current?.value || ''
 
+      // following best practises for Dexie transactions (https://dexie.org/docs/Tutorial/Best-Practices)
+        // let errors bubble up to catch - do NOT catch them inside the transaction block - the transaction will commit!
+        // make the transaction resolve  guaranteed the operation succeeded at this point
       db.transaction('rw', db.drums, db.drumMachines, async () => {
 
-      if(formData.allSounds){
-        const createdAt = Date.now()
-        const drumMachine :DrumMachine = {
-          name: drumMachineName,
-          createdAt
+        if(formData.allSounds){
+          const createdAt = Date.now()
+          const drumMachine :DrumMachine = {
+            name: drumMachineName,
+            createdAt
+          }
+          const dmId: IndexableType = await db.drumMachines.add(drumMachine);
+          
+          const drums:Drum[] = Array.from(formData.allSounds).map(sound => 
+            ({
+            audioFileUrl: sound.sound.blobUrl || '', // @todo WHY did I do this and is it OK?
+            audioBlob: sound.sound.audioBlob || '',
+            key: sound.key || '',
+            name: sound.name || '',
+            drumMachineId: dmId as number,
+            createdAt
+          }))
+
+          // make the transaction resolve with the last promise result
+          const promise = db.drums.bulkAdd(drums);
+
+           // If any of the promises above fails, transaction will abort and it's promise reject otherwise we resolve
+           return promise;
+
         }
-        const dmId: IndexableType = await db.drumMachines.add(drumMachine);
-        
-        const drums:Drum[] = Array.from(formData.allSounds).map(sound => 
-          ({
-          audioFileUrl: sound.sound.blobUrl || '', // @todo WHY did I do this and is it OK?
-          audioBlob: sound.sound.audioBlob || '',
-          key: sound.key || '',
-          name: sound.name || '',
-          drumMachineId: dmId as number,
-          createdAt
-        }))
-
-        await db.drums.bulkAdd(drums);
-
-      }
     
-      })
+      }).then((res) => {
+        // transaction succeeded it's safe to redirect - need to learn more about what router.push is doing!
+        // Make sure we're in the browser
+        if (typeof window !== 'undefined') {
+          router.push('/your-drum-machine')
+        }
 
+      }).catch((error) => {
+        // log or display the error
+        console.error(error)
+      })
 
     
     }
