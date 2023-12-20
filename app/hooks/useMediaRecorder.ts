@@ -41,7 +41,7 @@ const useMediaRecorder = (props: MediaRecorderHookProps) => {
     const startRecording = async () => {
         setRecordingStatus("recording")
         if(stream){
-            const media = new MediaRecorder(stream, { mimeType })
+            const media = new MediaRecorder(stream)
             if(mediaRecorder){
                 mediaRecorder.current = media
                 mediaRecorder.current.start()
