@@ -10,7 +10,7 @@ It’s very small and **very much a work in progress** (It's my sandbox), I took
 - Improve error handling/make consistent
 - Probably should plan a way to moderate user generated content/protect against abuse (people could record any old thing!) before this is available publicly,
 
-**Next big piece of work planned**  
+**Next big piece of work planned:**  
 Sync data from client app in IndexedDB with a server datastore
 
 **Where to view online:** https://rockin-drum-machine.vercel.app/  
