@@ -22,6 +22,7 @@
     "svg-loaders-react": "^2.2.1"
   },
   "devDependencies": {
+    "@playwright/test": "^1.44.1",
     "@storybook/addon-essentials": "^7.6.8",
     "@storybook/addon-interactions": "^7.6.8",
     "@storybook/addon-links": "^7.6.8",
