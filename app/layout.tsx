@@ -10,6 +10,15 @@ export const metadata: Metadata = {
   description: 'My Sandbox/Work In Progress/Personal Development App',
 }
 
+/**
+ *
+ * Is this an acceptable pattern for syncing?
+ * How is RootLayout called and what are the children props?
+ * BAD SMELL - Layout.... why does it care about sync
+ *
+ * I want the syncing logic to persist across the entire application but it
+ * seems wrong to do this... needs more investigation!
+ */
 export default function RootLayout({
   children,
 }: {
