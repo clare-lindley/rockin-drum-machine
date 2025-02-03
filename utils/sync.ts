@@ -1,7 +1,7 @@
-// syncUtils.js
+// sync.ts
 
-const syncData = () => {
-    // read from IDB where last mod >= localstorage.last_successful_sync_timestamp
+  const syncData = () => {
+    // @todoread from IDB where last mod >= localstorage.last_successful_sync_timestamp
     console.log('Syncing data...')
   };
   
@@ -11,9 +11,9 @@ const syncData = () => {
       syncData()
     }, intervalDuration)
   
-    // Return a function to stop the interval
+    // Return a function to stop the interval for use effect to clean up after the component is unmounted
     return () => clearInterval(syncInterval)
   };
   
-  export { syncData, startSyncInterval }
+  export { startSyncInterval }
   
