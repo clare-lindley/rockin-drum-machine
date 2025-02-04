@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import React from "react";
 import Link from "next/link";
@@ -6,8 +6,7 @@ import DrumMachineUI from "./components/DrumMachine";
 import testDrums from "../utils/spikes/testData";
 
 export default function HomePage() {
-
-/*  
+  /*  
 debug to check: is what I am uploading from Chrome in MacOS supported by the MediaRecorder?
 const types = [
     "video/webm",
@@ -28,24 +27,20 @@ const types = [
       }`,
     );
   } */
-  
 
   return (
     <>
-     {testDrums && (
-      <>
-      <h1>Here is a hardcoded Drum Machine with test drums hosted on AWS!</h1>
-      <div>
-        <Link href={`/create-drum-machine/`}>Create your own Drum Machine!</Link>
-      </div>
-      <DrumMachineUI drums={testDrums}/>
-      </> 
-     )} 
+      {testDrums && (
+        <>
+          <div className="intro">
+            <h1>Rockin' Drum Machine!</h1>
+            <Link href={`/create-drum-machine/`} className="button-link">
+              Create your own Drum Machine!
+            </Link>
+          </div>
+          <DrumMachineUI drums={testDrums} />
+        </>
+      )}
     </>
-  )
+  );
 }
-
-
-
-
-

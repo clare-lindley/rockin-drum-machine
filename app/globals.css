@@ -1,22 +1,114 @@
-/* @tailwind base;
-@tailwind components;
-@tailwind utilities; */
-
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
+@font-face {
+  font-family: "Graffiti";
+  src: url("./adrip1.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
+.current-drum,
+h1 {
+  font-family: "Graffiti", sans-serif;
+  font-size: 10rem;
+  margin: 0;
+  padding: 1rem;
 }
 
+body {
+  background: url("./background.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  padding: 1.5rem;
+}
 
+html {
+  font-size: 10px;
+  background-size: cover;
+}
+
+body,
+html {
+  margin: 0;
+  padding: 0;
+  font-family: sans-serif;
+}
+
+.button-link {
+  display: inline-block;
+  padding: 10px 20px;
+  font-size: 16px;
+  font-weight: bold;
+  color: #fff;
+  background-color: #ffc600;
+  border: none;
+  border-radius: 5px;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.button-link:hover {
+  background-color: #a38108;
+}
+
+#drum-machine {
+  display: block;
+}
+
+.intro {
+  margin-bottom: 3rem;
+}
+
+.keys {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+  margin-top: 3rem;
+}
+
+.key {
+  border: 0.4rem solid black;
+  border-radius: 0.5rem;
+  margin: 1rem;
+  font-size: 1.5rem;
+  padding: 1rem 0.5rem;
+  transition: all 0.5s ease;
+  width: 10rem;
+  text-align: center;
+  color: white;
+  background: rgba(0, 0, 0, 0.4);
+  text-shadow: 0 0 0.5rem black;
+}
+
+.playing {
+  transform: scale(1.1);
+  border-color: #ffc600;
+  box-shadow: 0 0 1rem #ffc600;
+}
+
+.current-drum {
+  font-size: 10rem;
+  padding: 20px;
+  display: inline;
+  padding: 1rem 0.5rem;
+}
+
+.current-drum.visible {
+  background-color: #ffc600;
+}
+
+/* kbd {
+  display: block;
+  font-size: 4rem;
+}
+
+.sound {
+  font-size: 1.2rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1rem;
+  color: #ffc600;
+} */
 
 /* Drum Machine */
 /* body {
@@ -27,7 +119,7 @@
   min-height: 100vh; 
 } */
 
-.dm-title {
+/* .dm-title {
   background-color: aquamarine;
 }
 
@@ -37,7 +129,7 @@
   width: 60px;
   margin: 10px;
   cursor: pointer;
-}
+} */
 
 /* Audio Recorder */
 .audio-recorder {
@@ -54,25 +146,25 @@
 }
 .audio-controls,
 .video-controls {
-    margin-bottom: 20px;
+  margin-bottom: 20px;
 }
 .audio-player,
 .video-player {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 .audio-player,
 .video-player,
 .recorded-player {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 .live-player {
-    height: 200px;
-    width: 400px;
-    border: 1px solid #646cff;
+  height: 200px;
+  width: 400px;
+  border: 1px solid #646cff;
 }
 .recorded-player video {
   height: 400px;
@@ -105,17 +197,18 @@
   background-color: orange;
 }
 .footer {
-  grid-column: 1 / span 2 ;
-  grid-row:  3 / 3;
+  grid-column: 1 / span 2;
+  grid-row: 3 / 3;
   background-color: orange;
 }
 
-input, textarea {
+input,
+textarea {
   border: 1px solid burlywood;
 }
 
 .your-sound {
-  background-color: #1ABC9C;
+  background-color: #1abc9c;
   padding: 20px;
   margin: 20px 0 20px 0;
 }
@@ -126,6 +219,6 @@ input, textarea {
 }
 
 .audio-recording {
-  background-color: #1ABC9C;
+  background-color: #1abc9c;
   width: 40px;
 }

@@ -49,6 +49,8 @@ export interface DrumMachineProps {
 export interface DrumProps {
     drum: DatabaseDrum
     onDrumClick: () => void
+    className: string
+    onTransitionEnd: () => void
 }
 
 export interface Recording {
