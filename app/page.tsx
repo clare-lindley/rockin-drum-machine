@@ -7,7 +7,9 @@ import testDrums from "../utils/spikes/testData";
 
 export default function HomePage() {
 
-/*   const types = [
+/*  
+debug to check: is what I am uploading from Chrome in MacOS supported by the MediaRecorder?
+const types = [
     "video/webm",
     "audio/webm",
     "video/webm;codecs=vp8",

@@ -2,7 +2,7 @@
 
   const syncData = () => {
     // @todoread from IDB where last mod >= localstorage.last_successful_sync_timestamp
-    console.log('Syncing data...')
+    console.log('Syncing data from IDB...')
   };
   
   const startSyncInterval = (intervalDuration: number) => {

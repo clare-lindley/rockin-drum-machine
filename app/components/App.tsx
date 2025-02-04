@@ -1,19 +1,16 @@
 "use client"
 
-import { startSyncInterval } from '@/utils/sync';
-import { useEffect } from 'react'
+import React from 'react';
+import useSync from '@/hooks/useSync';
 
-function App() {
-  useEffect(() => {
-    // Start syncing data every 5 minutes
-    const stopSync = startSyncInterval(1000)
+const App = ({ children }: { children: React.ReactNode }) => {
+  useSync();
 
-    // Clean up the interval when the component unmounts or changes
-    return stopSync
-  }, [])
+  return (
+    <>
+      {children}
+    </>
+  );
+};
 
-  return false
-
-}
-
-export default App
+export default App;
