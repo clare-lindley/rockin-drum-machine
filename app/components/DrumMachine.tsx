@@ -3,18 +3,6 @@ import { DatabaseDrum, DrumMachineProps } from "../types";
 import DrumPad from "./DrumPad";
 import React from "react";
 
-/**
- * STYLES:
-
- * Make the background image work for all pages
- *
- *
- * AFTER JITS
- * Read all the code and understand it!
- * Make recomendations for improvements
- * Prep for the oauth Google doc creation thing
- */
-
 export default function DrumMachineUI(props: DrumMachineProps) {
   const { drums } = props;
 
